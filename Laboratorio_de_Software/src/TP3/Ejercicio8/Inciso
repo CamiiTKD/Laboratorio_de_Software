@@ -1,0 +1,8 @@
+### Conceptos Clave Aplicados
+
+1. Campos y Métodos en enum: Los `enum` en Java son clases completas que pueden declarar
+atributos `final`, constructores y métodos de instancia.
+2. Singleton con enum: Evita la necesidad de manejar manualmente variables estáticas
+con doble verificación de bloqueo (double-checked locking) o resolver problemas de serialización.
+3. Sobrecarga de Métodos: Permite que `InstrumentoMusical` ofrezca distintas variantes
+de `hacerSonar` y `afinar` según los parámetros recibidos.
