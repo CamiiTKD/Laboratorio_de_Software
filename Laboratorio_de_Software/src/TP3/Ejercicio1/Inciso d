@@ -1,0 +1,14 @@
+### d) Creación de objetos StackIterator desde una clase externa con new
+
+* ¿Es posible? Sí, es posible, siempre que la clase anidada tenga un modificador de acceso visible
+desde la clase externa (por ejemplo, `public`).
+* ¿Cómo se hace? Al tratarse de una clase interna no estática,
+una instancia de `StackIterator` no puede existir de forma aislada;
+requiere una instancia previa de la clase contenedora `Stack`.
+La sintaxis para instanciarla desde otra clase mediante el operador `new` es:
+
+```
+Stack pila = new Stack();
+// Sintaxis: instanciaContenedora.new ClaseInterna()
+Stack.StackIterator iterador = pila.new StackIterator();
+```

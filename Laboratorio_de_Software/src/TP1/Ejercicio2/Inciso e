@@ -1,0 +1,30 @@
+e) package griego;
+   public class Alpha {
+       protected int x;
+       protected void otroMetodoA(){
+           System.out.println(“Un método protegido”);
+       }
+   }
+
+   package romano;
+   import griego.*;
+   public class Delta extends Alpha {
+       void unMetodoD(Alpha a, Delta d){
+           a.x=10;
+           d.x=10;
+           a.otroMetodoA();
+           d.otroMetodoA();
+       }
+   }
+
+No es completamente válido: las líneas con a fallan en compilación, mientras que las líneas con d son válidas.
+
+- a.x = 10;	❌ Error	Intenta acceder a un miembro protected a través de una referencia de tipo Alpha.
+- d.x = 10;	✔️ Válido	Accede al miembro heredado a través de una referencia de su propio tipo (Delta).
+- a.otroMetodoA();	❌ Error	Mismo motivo: no puede invocar métodos protected mediante una referencia directa de la superclase.
+- d.otroMetodoA();	✔️ Válido	Invoca el método heredado a través de una referencia de tipo Delta (o this).
+
+Justificación: La regla de acceso protected fuera del paquete
+Según la especificación del lenguaje Java (JLS §6.6.2), cuando una subclase (Delta) se encuentra en un paquete distinto (romano) al de la superclase (griego), el acceso a los miembros protected solo está permitido a través de la herencia y mediante referencias que sean del tipo de la propia subclase (o subtipos de esta).
+- Caso d.x y d.otroMetodoA(): Como d es del tipo Delta (la subclase actual), el compilador garantiza que el acceso ocurre dentro de la jerarquía propia de esa subclase.
+- Caso a.x y a.otroMetodoA(): Como a es una referencia genérica de tipo Alpha, Delta no puede garantizar qué instancia concreta es (podría ser otra subclase distinta de Alpha, como un Gamma). Java prohíbe que una subclase manipule miembros protected de instancias arbitrarias de la superclase fuera del paquete original.

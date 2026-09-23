@@ -1,0 +1,31 @@
+### b) Definición de la clase InnerTest en el paquete practica3
+
+Creamos la clase `InnerTest` con un método `main()` que solicita distintos radios
+en un bucle o en ejecuciones sucesivas y muestra los resultados:
+
+```
+import java.util.Scanner;
+
+public class InnerTest {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        String continuar;
+
+        do {
+            System.out.println("\n--- CÁLCULO DE CÍRCULO ---");
+            // Se solicita e ingresa el radio
+            InnerStatic.Circulo.ingresarRadio(scanner);
+
+            // Invocación a los métodos de cálculo
+            InnerStatic.Circulo.getArea();
+            InnerStatic.Circulo.getLongitudCircunferencia();
+
+            System.out.print("\n¿Desea ingresar otro radio? (s/n): ");
+            continuar = scanner.next();
+        } while (continuar.equalsIgnoreCase("s"));
+
+        System.out.println("Ejecución finalizada.");
+        scanner.close();
+    }
+}
+```

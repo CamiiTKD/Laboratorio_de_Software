@@ -1,0 +1,22 @@
+b) package griego;
+   public class Alpha {
+       public int x;
+       public void unMetodoA(){
+           System.out.println(“Un Método Público”);
+       }
+   }
+
+   package romano;
+   import griego.*;
+   class Beta {
+       void unMetodoB(){
+           Alpha a=new Alpha();
+           a.x=10;
+           a.unMetodoA();
+       }
+   }
+
+Sí, todos los accesos son válidos.
+Justificación
+- Visibilidad de la clase: Alpha está declarada como public dentro del paquete griego. Esto permite que clases de otros paquetes (como Beta en el paquete romano) puedan verla e instanciarla, siempre que sea importada (import griego.*; o import griego.Alpha;).
+- Visibilidad de los miembros: Tanto el atributo x como el método unMetodoA() están declarados con el modificador public. El especificador public otorga visibilidad global irrestricta desde cualquier paquete, por lo que la referencia a puede acceder a a.x y ejecutar a.unMetodoA() sin restricciones.

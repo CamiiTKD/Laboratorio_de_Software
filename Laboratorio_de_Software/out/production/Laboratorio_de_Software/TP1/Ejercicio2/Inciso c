@@ -1,0 +1,27 @@
+c) package griego;
+   public class Alpha {
+       int x;
+       void unMetodoA(){
+           System.out.println(“Un mét. paquete”);
+       }
+   }
+
+   package romano;
+   import griego.*;
+   class Beta {
+       void unMetodoB(){
+           Alpha a = new Alpha();
+           a.x=10;
+           a.unMetodoA();
+       }
+   }
+
+No, el método unMetodoB() no es válido y producirá errores de compilación.
+Justificación
+- Visibilidad a nivel de clase: La clase Alpha está declarada como public, por lo que Beta (ubicada en el paquete romano) puede importarla e instanciarla sin problemas (Alpha a = new Alpha(); es válido).
+- Visibilidad a nivel de miembros (acceso default / package-private): Ni el atributo int x; ni el método void unMetodoA() tienen un especificador de acceso explícito, lo que les asigna visibilidad por defecto (package-private).
+- Restricción de paquete: Los miembros con acceso por defecto solo son visibles para clases que pertenecen al mismo paquete (griego). Como la clase Beta pertenece a un paquete distinto (romano), no tiene permisos para acceder a a.x ni para invocar a.unMetodoA().
+
+Ambas líneas generarán un error del tipo:
+- x is not public in griego.Alpha; cannot be accessed from outside package
+- unMetodoA() is not public in griego.Alpha; cannot be accessed from outside package

@@ -1,0 +1,26 @@
+a) package griego;
+   class Alpha {
+       protected int x;
+       protected void otroMetodoA(){
+           System.out.println(“Un método protegido”);
+       }
+   }
+
+   package griego;
+   class Gamma {
+       void unMétodoG(){
+           Alpha a = new Alpha();
+           a.x=10;
+           a.otroMetodoA();
+       }
+   }
+
+Sí, el acceso es válido.
+Justificación:
+En Java, el modificador de acceso protected permite la visibilidad de los miembros (atributos y métodos) en dos escenarios:
+- Dentro del mismo paquete: Cualquier clase que pertenezca al mismo paquete puede acceder directamente a los miembros protected (acceso a nivel de paquete).
+- Por herencia: Cualquier subclase, incluso si se encuentra en un paquete diferente, puede acceder a ellos a través de los mecanismos de herencia.
+
+Dado que tanto la clase Alpha como la clase Gamma están declaradas dentro del mismo paquete (package griego;):
+- Gamma tiene visibilidad sobre la clase Alpha (que tiene modificador por defecto / package-private).
+- Gamma puede instanciar un objeto de tipo Alpha y acceder directamente tanto al atributo a.x como al método a.otroMetodoA().

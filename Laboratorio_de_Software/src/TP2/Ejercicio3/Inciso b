@@ -1,0 +1,113 @@
+### **b) Alternativa basada en Composición y Patrón Decorador (Wrapper)**
+
+* **¿Qué interfaz usaría?** Utilizaríamos la interfaz **java.util.Set<E>.
+
+* **Ventajas de esta implementación frente a la original**:
+  1. **Independencia de implementación**: Evitamos depender de los detalles internos de `HashSet` y del autouso de sus métodos[2].
+  2. **Polimorfismo / Flexibilidad**: La nueva clase puede envolver (*decorar*) cualquier implementación de `Set` (`HashSet`, `TreeSet`, `LinkedHashSet`, etc.), no solo `HashSet`[2].
+  3. **Evita la fragilidad de la superclase**: Al delegar explícitamente en el objeto contenido (*forwarding*), controlamos con precisión el comportamiento de cada método[2].
+
+#### **Implementación:**
+
+```
+import java.util.*;
+
+public class SetAgregados<E> implements Set<E> {
+    private final Set<E> set; // Encapsulamiento por composición
+    private int cantidadAgregados = 0;
+
+    public SetAgregados(Set<E> set) {
+        this.set = Objects.requireNonNull(set);
+    }
+
+    public SetAgregados() {
+        this(new HashSet<>());
+    }
+
+    @Override
+    public boolean add(E e) {
+        if (set.add(e)) {
+            cantidadAgregados++;
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public boolean addAll(Collection c) {
+        int tamanioAnterior = set.size();
+        boolean modificado = set.addAll(c);
+        cantidadAgregados += (set.size() - tamanioAnterior);
+        // Cuenta solo los elementos efectivamente agregados return modificado;
+    }
+
+    public int getCantidadAgregados() {
+        return cantidadAgregados;
+    }
+
+    // Métodos delegados (Forwarding)
+    @Override
+    public int size() {
+        return set.size();
+    }
+
+    @Override
+    public boolean isEmpty() {
+        return set.isEmpty();
+    }
+
+    @Override
+    public boolean contains(Object o) {
+        return set.contains(o);
+    }
+
+    @Override
+    public Iterator<E> iterator() {
+        return set.iterator();
+    }
+
+    @Override
+    public Object[] toArray() {
+        return set.toArray();
+    }
+
+    @Override
+    public <E> T[] toArray(T[] a) {
+        return set.toArray(a);
+    }
+
+    @Override
+    public boolean remove(Object o) {
+        return set.remove(o);
+    }
+
+    @Override
+    public boolean containsAll(Collection c) {
+        return set.containsAll(c);
+    }
+
+    @Override
+    public boolean retainAll(Collection c) {
+        return set.retainAll(c);
+    }
+
+    @Override
+    public boolean removeAll(Collection c) {
+        return set.removeAll(c);
+    }
+
+    @Override
+    public void clear() {
+        set.clear();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        return set.equals(o);
+    }
+
+    @Override
+    public int hashCode() {
+        return set.hashCode();
+    }
+}

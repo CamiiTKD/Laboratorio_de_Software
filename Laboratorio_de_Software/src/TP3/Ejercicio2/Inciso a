@@ -1,0 +1,34 @@
+### a) Modificación para ingresar el valor inicial del radio por teclado
+
+Para permitir que el usuario ingrese el valor del radio al momento de la ejecución,
+agregamos un método estático `ingresarRadio()` dentro de la clase anidada `Circulo`
+(o permitimos la lectura mediante `java.util.Scanner`):
+```
+import java.util.Scanner;
+import static java.lang.Math.pow;
+
+public class InnerStatic {
+    static double PI = 3.1416;
+    public static class Circulo {
+        public static double radio;
+
+        // Se inicializa mediante lectura por consola
+        public static void ingresarRadio(Scanner scanner) {
+            System.out.print("Ingrese el radio de la circunferencia: ");
+            radio = scanner.nextDouble();
+        }
+
+        public static double getArea() {
+            var a = PI * pow(radio, 2);
+            System.out.println("El area es: " + a);
+            return a;
+        }
+
+        public static double getLongitudCircunferencia() {
+            var l = 2 * PI * radio;
+            System.out.println("La longitud es: " + l);
+            return l;
+        }
+    }
+}
+```

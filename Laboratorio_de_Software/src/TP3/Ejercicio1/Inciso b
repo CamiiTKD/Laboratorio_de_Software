@@ -1,0 +1,6 @@
+### b) Adición de la clase anidada StackIterator
+
+La clase `StackIterator` se define como una clase interna (no estática) dentro de `Stack`.
+Al no ser estática, mantiene una referencia implícita al objeto contenedor `Stack` y
+cuenta con acceso directo a sus variables de instancia privadas (`items`).
+Implementa los métodos `hasNext()` y `next()` de la interfaz `Iterator

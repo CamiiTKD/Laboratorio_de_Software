@@ -1,0 +1,15 @@
+### c) Reemplazo de PI * Math.pow(radio, 2) por PI * pow(radio, 2)
+
+* Mecanismo necesario: Para poder invocar a `pow(radio, 2)`
+omitiendo el prefijo de la clase `Math`, se utiliza la importación estática (import static).
+* Sentencia a incluir en el encabezado del archivo:
+
+```
+import static java.lang.Math.pow;
+// O mediante importación por demanda de todos los miembros estáticos de Math:
+// import static java.lang.Math.*;
+
+```
+
+* Fundamento: La sentencia `import static` importa los nombres de los miembros estáticos
+de una clase al espacio de nombres actual, permitiendo escribir expresiones matemáticas más concisas.

@@ -1,0 +1,45 @@
+### d) Análisis de la inferencia de tipos con var
+
+#### 1\. Tipos inferidos por el compilador para a y l :
+
+* var a = PI * pow(radio, 2);:
+  * Tipo inferido: double.
+  * Regla: `PI` es de tipo `double` y el método `Math.pow()` retorna un valor de tipo `double`.
+  La multiplicación entre dos expresiones de tipo `double` resulta en un valor de tipo `double`.
+  El compilador analiza la expresión del lado derecho del operador `=` (initializer expression)
+  e infiere en tiempo de compilación que `a` debe ser declarada como `double`.
+* var l = 2 * PI * radio;:
+  * Tipo inferido: double.
+  * Regla: El literal `2` es de tipo `int`, mientras que `PI` y `radio` son de tipo `double`.
+  Por la regla de promoción numérica primitiva de Java, en operaciones aritméticas binarias con
+  tipos mixtos, el operando entero es promovido a `double`, haciendo que la expresión completa
+  evalúe a un `double`.
+
+#### 2\. Reglas de uso de var en el código (Validez de uso):
+
+* ¿Dónde SÍ es válido utilizar var?
+  * Únicamente en variables locales dentro de métodos o bloques de código que incluyan una
+  expresión de inicialización explícita en su declaración.
+  * Ejemplos válidos:
+
+```
+var scanner = new Scanner(System.in); // Válido en main()
+var area = InnerStatic.Circulo.getArea(); // Válido en un método local
+
+```
+
+* ¿Dónde NO es válido utilizar var?
+  1. **Atributos de clase o de instancia (Campos/Fields)**: No se puede usar `var` para declarar `PI`
+  (`static var PI = 3.1416;`) ni `radio` (`static var radio = 2;`).
+
+  2. **Parámetros de métodos**: No se permite en las firmas de los métodos
+  (ej. `public static void ingresarRadio(var scanner)` es ilegal).
+
+  3. **Tipo de retorno de un método**: No se puede usar como tipo de retorno
+  (ej. `public static var getArea()` es ilegal).
+
+  4. **Variables locales sin inicialización**: Declaraciones como `var radio;`
+  sin asignar un valor inicial inmediato causan error de compilación por imposibilidad de inferencia.
+
+  5. **Variables inicializadas con null**: `var x = null;`
+  falla porque el compilador no puede determinar el tipo de referencia específico a partir del valor nulo.

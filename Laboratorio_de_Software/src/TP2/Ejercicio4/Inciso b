@@ -1,0 +1,31 @@
+### b) ¿Qué relación tiene con el serialVersionUID?
+Analice su impacto al modificar la implementación de las clases.
+
+#### Relación entre Serializable y serialVersionUID
+
+El `serialVersionUID` es un número de versión único (`private static final long`)
+que la JVM utiliza durante la deserialización para verificar que el emisor
+(el flujo serializado) y el receptor (la clase cargada en la JVM) poseen
+definiciones de clase compatibles.
+
+#### Cálculo automático vs. Declaración explícita
+
+* Sin serialVersionUID explícito: Si no se declara la constante, la JVM genera
+automáticamente un código de versión en tiempo de compilación mediante
+un hash derivado de los campos, métodos, modificadores y jerarquía de la clase.
+* Impacto al modificar la clase:
+
+  * Si la clase NO tiene serialVersionUID explícito y se realiza cualquier cambio
+  en su implementación (ej. agregar/quitar un atributo o modificar una firma),
+  el compilador recalculará un `serialVersionUID` diferente.
+  Al intentar deserializar un objeto previamente guardado en disco o red
+  con la versión anterior de la clase, la JVM detecta la inconsistencia y
+  lanza una excepción de tipo **java.io.InvalidClassException**,
+  impidiendo la recuperación de los datos.
+
+  * Si la clase SÍ tiene serialVersionUID explícito (ej. `private static final long serialVersionUID = 1L;`),
+  se le indica a la JVM que las distintas versiones de la clase mantienen
+  compatibilidad. Si se agregan nuevos atributos, la deserialización no fallará:
+  la JVM asignará los valores por defecto (`null`, `0`, `false`) a los campos nuevos
+  no presentes en el objeto serializado original, permitiendo la evolución
+  del software sin romper los objetos persistidos.

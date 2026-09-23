@@ -1,0 +1,16 @@
+### c) Adición del método iterator() en Stack y nueva frecuencia de recorrido
+
+* Método agregado:
+
+```
+public Iterator<String> iterator() {
+    return new StackIterator();
+}
+```
+
+* ¿Cuántas veces puede recorrer la pila ahora?
+    Se puede recorrer cuantas veces se desee (indefinidamente).
+* Explicación: Cada invocación al método `iterator()` crea un
+    nuevo objeto iterador independiente con su propio puntero de lectura (`posicion`).
+    Al recorrer los elementos a través del iterador, se accede a los datos almacenados en `items`
+    mediante lecturas sin remover ni alterar la estructura original de la pila.

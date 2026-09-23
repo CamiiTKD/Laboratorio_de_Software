@@ -1,0 +1,15 @@
+c) Vacuna incluye el constructor sin argumentos public Vacuna() {} (como en el Ejercicio 1):
+   Las clases compilan, pero surge un problema de diseño e integridad de datos:
+   - los atributos heredados (marca, paisOrigen, etc.) quedan con sus valores por defecto (null, 0), ya que el constructor de la subclase solo pide los propios y no inicializa el estado heredado.
+
+Si tuviera problemas con el constructor:
+Existen dos formas de resolverlo según el requerimiento:
+- Solución a nivel de herencia en la subclase (Recomendada en POO): Extender los constructores de las subclases para recibir tanto los parámetros heredados como los propios, delegando la inicialización a super(...):
+
+Java
+public VacunaPatogenoIntegro(String marca, String paisOrigen, String enfermedad, int dosis, String nombreVirus) {
+    super(marca, paisOrigen, enfermedad, dosis);
+    this.nombreVirus = nombreVirus;
+}
+
+- Solución en la superclase: Asegurar que Vacuna posea un constructor público sin argumentos (public Vacuna() {}) si se desea permitir la inicialización diferida mediante setters.

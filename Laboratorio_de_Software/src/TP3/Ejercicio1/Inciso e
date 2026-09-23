@@ -1,0 +1,20 @@
+### e) Evitar la creación de instancias de la clase anidada desde otras clases
+
+* Solución: Declarar la clase anidada con el modificador de acceso private:
+
+```
+private class StackIterator implements Iterator<String> {
+   // ...
+}
+```
+
+* Explicación y Patrón de Diseño: Al calificar `StackIterator` como `private`,
+la visibilidad de la clase queda estrictamente confinada al cuerpo de `Stack`.
+
+Ninguna clase externa podrá hacer `pila.new StackIterator()` ni declarar variables de ese tipo concreto.
+Para permitir que los clientes externos sigan recorriendo la pila,
+`Stack` mantiene su método público `iterator()` retornando la instancia a través del tipo de la interfaz
+pública `Iterator<String>. Este mecanismo realiza un upcasting que logra un ocultamiento total
+de los detalles de implementación (encapsulamiento), un patrón utilizado ampliamente
+en las colecciones de la API estándar de Java.
+```

@@ -1,0 +1,43 @@
+interface ColPrimarios {
+    int ROJO=1, VERDE=2, AZUL=4;
+}
+
+interface ColArcoIris extends ColPrimarios {
+    int AMARILLO=3, NARANJA=5, INDIGO=6, VIOLETA=7;
+}
+
+interface ColImpresion extends ColPrimarios {
+    int AMARILLO=8, CYAN=16, MAGENTA=32;
+}
+
+interface TodosLosColores extends ColImpresion, ColArcoIris {
+    int FUCSIA=17, BORDO=ROJO+90;
+}
+
+class MisColores implements ColImpresion, ColArcoIris {
+     public MisColores() {
+        int unColor=AMARILLO;
+     }
+}
+
+--------------------------------------------
+
+1. ColPrimarios: **Correcta.** Las constantes definidas en una interfaz son implícitamente `public`, `static` y `final`.
+2. ColArcoIris: **Correcta.** Una interfaz puede extender a otra mediante la palabra clave `extends` y definir sus propias constantes.
+3. ColImpresion: **Correcta.** Extiende `ColPrimarios` y declara sus propias constantes (incluyendo `AMARILLO = 8`).
+4. TodosLosColores: **Correcta.**
+  * Herencia Múltiple de Interfaces: Una interfaz en Java puede extender múltiples interfaces utilizando comas (`extends ColImpresion, ColArcoIris`).
+  * Sin conflicto por **AMARILLO** en la declaración: Aunque `AMARILLO` proviene tanto de `ColArcoIris` (valor 3) como de `ColImpresion` (valor 8), la declaración de la interfaz es válida porque no hace referencia simple a dicho atributo en su cuerpo.
+  * Herencia de **ROJO**: El atributo `ROJO` proviene de `ColPrimarios` a través de ambas ramas. La especificación de Java establece que si un atributo se hereda múltiples veces desde la misma interfaz base, se hereda una sola vez. Por ende, la expresión `BORDO = ROJO + 90` no es ambigua (da `91`).
+5. MisColores: **Ilegal (Error de Compilación).**
+  * **Motivo**: La clase implementa `ColImpresion` y `ColArcoIris`. Ambas interfaces definen un atributo constante llamado `AMARILLO`. Al intentar utilizar la sentencia `int unColor = AMARILLO;` dentro del constructor, el compilador no puede determinar a cuál de las dos constantes se hace referencia, generando un **error de referencia ambigua**.
+  * **Corrección**: Se debe calificar explícitamente el nombre del atributo con la interfaz correspondiente:
+
+```
+class MisColores implements ColImpresion, ColArcoIris {
+    public MisColores() {
+        // Corrección: desambiguar indicando la interfaz de origen
+        int unColor = ColArcoIris.AMARILLO; // o ColImpresion.AMARILLO
+    }
+}
+```

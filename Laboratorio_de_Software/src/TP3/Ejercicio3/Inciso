@@ -1,0 +1,33 @@
+### **Diseño de la Solución**
+
+1. Clase StringConverterSet<E>:
+    - * Extiende **java.util.AbstractSet<String> para heredar la implementación esquelética del marco
+    de colecciones de Java (*Skeletal Implementation* / *Template Method*).
+    - * Mantiene un atributo privado `Set<E> set que almacena los elementos originales
+    del tipo generico `E` (por ejemplo, `Integer`, `Double`, objetos de dominio, etc.).
+    - * Sobrescribe los métodos fundamentales `size()` e `iterator()`,
+    además de delegar métodos como `isEmpty()` y `clear()`.
+
+2. Adapter IteratorStringAdapter:
+    - * Es una clase anidada interna dentro de `StringConverterSet`.
+    - * Implementa la interfaz Iterator<String>.
+    - * Envuelve (adapta) un `Iterator<E> 1. * del conjunto subyacente de modo que,
+    al invocar `next()`, convierte el objeto recuperado a su representación de cadena
+    mediante `.toString()`.
+
+----------------------------------------------------------
+### **Análisis de los Conceptos Clave**
+
+1. Uso de AbstractSet<E>: Al extender `AbstractSet<String>`,
+no es necesario implementar manualmente todos los métodos de la interfaz `Set`
+(como `equals`, `hashCode`, `containsAll`, `removeAll`, `toArray`, etc.).
+`AbstractSet` provee las implementaciones basadas en los métodos obligatorios `iterator()` y `size()`.
+
+2. Patrón de Diseño Adapter: El objeto `IteratorStringAdapter` convierte la interfaz
+de un objeto (`Iterator<E>`) en otra interfaz esperada por el cliente (`Iterator<String>`),
+permitiendo que el cliente trate cualquier conjunto de objetos heterogéneos
+como una colección de cadenas de texto.
+
+3. Clases Anidadas Internas: Al declarar `IteratorStringAdapter` como clase interna
+dentro de `StringConverterSet`, el adaptador mantiene acceso directo a la estructura
+de la clase contenedora y encapsula la lógica de conversión sin exponerla a clases externas.

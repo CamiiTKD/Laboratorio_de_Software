@@ -1,0 +1,30 @@
+f) Creación de JAR y especificación de la clase main
+La clase principal se especifica dentro del archivo de manifiesto (META-INF/MANIFEST.MF) mediante el atributo Main-Class.
+
+Pasos de compilación y empaquetado:
+
+Compilar las clases:
+Bash
+- javac Vacuna.java TestVacuna.java
+C
+rear un archivo manifest.txt con la línea:
+Plaintext
+- Main-Class: TestVacuna
+
+(Debe incluir un salto de línea al final).
+
+Generar el .jar:
+Bash
+- jar cvfm VacunasApp.jar manifest.txt *.class
+
+Ejecutarlo:
+Bash
+- java -jar VacunasApp.jar
+
+-----------------------------------------------------------------------------
+g) Implementación Inmutable (Clase Inmutable o record)
+Para garantizar que un objeto no sea modificado una vez instanciado (inmutabilidad), se deben:
+
+- Declarar todos los atributos como private final.
+- Quitar todos los métodos setters.
+- Inicializar todos los campos únicamente a través del constructor.

@@ -1,0 +1,147 @@
+### c) Solución extensible para definir nuevos tipos de **Set** (Patrón Decorador + ForwardingSet)
+
+Para crear fácilmente distintos tipos de `Set` decorados (como uno que cuente elementos removidos, agregados, etc.) sin duplicar todo el código de delegación de la interfaz `Set`, definimos una **clase contenedora/adaptadora base de delegación (** **ForwardingSet** **)**[2].
+
+#### 1. Clase Base de Delegación (ForwardingSet)
+
+```
+import java.util.*;
+
+public abstract class ForwardingSet<E> implements Set<E>{
+    private final Set<E> s;
+
+    public ForwardingSet(Set<E> s){
+        this.s = Objects.requireNonNull(s);
+    }
+
+    @Override
+    public int size() {
+        return s.size();
+    }
+
+    @Override
+    public boolean isEmpty() {
+        return s.isEmpty();
+    }
+
+    @Override
+    public boolean contains(Object o) {
+        return s.contains(o);
+    }
+
+    @Override
+    public Iterator<E> iterator() {
+        return s.iterator();
+    }
+
+    @Override
+    public Object[] toArray() {
+        return s.toArray();
+    }
+
+    @Override
+    public <E> T[] toArray(T[] a) {
+        return s.toArray(a);
+    }
+
+    @Override
+    public boolean add(E e) {
+        return s.add(e);
+    }
+
+    @Override
+    public boolean remove(Object o) {
+        return s.remove(o);
+    }
+
+    @Override
+    public boolean containsAll(Collection c) {
+        return s.containsAll(c);
+    }
+
+    @Override
+    public boolean addAll(Collection c) {
+        return s.addAll(c);
+    }
+
+    @Override
+    public boolean retainAll(Collection c) {
+        return s.retainAll(c);
+    }
+
+    @Override
+    public boolean removeAll(Collection c) {
+        return s.removeAll(c);
+    }
+
+    @Override
+    public void clear() {
+        s.clear();
+    }
+
+    ```
+    @Override
+    public boolean equals(Object o) {
+        return s.equals(o);
+    }
+
+    @Override
+    public int hashCode() {
+        return s.hashCode();
+    }
+}
+
+```
+
+#### 2. Implementación de **SetRemovidos** reutilizando ForwardingSet
+
+```
+import java.util.*;
+
+public class SetRemovidos<E> extends ForwardingSet<E> {
+    private int cantidadRemovidos = 0;
+
+    public SetRemovidos(Set<E> s){
+        super(s);
+    }
+
+    public SetRemovidos() {
+        super(new HashSet<>());
+    }
+
+    @Override
+    public boolean remove(Object o) {
+        if (super.remove(o)) {
+            cantidadRemovidos++;
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public boolean removeAll(Collection<?> c) {
+        boolean modificado = false;
+        for (Object o : c) {
+            if (remove(o)) {
+                modificado = true;
+            }
+        }
+        return modificado;
+    }
+
+    @Override
+    public void clear() {
+        cantidadRemovidos += size();
+        super.clear();
+    }
+
+    public int getCantidadRemovidos() {
+        return cantidadRemovidos;
+    }
+}
+```
+
+Gracias al patrón de composición con clase de delegación base (ForwardingSet),
+definir nuevos tipos de conjuntos decorados es simple y limpio:
+solo se sobreescriben los métodos específicos de interés (`remove`, `add`, etc.)
+garantizando encapsulamiento e independizando la lógica de la implementación subyacente.

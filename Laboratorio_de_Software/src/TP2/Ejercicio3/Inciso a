@@ -1,0 +1,50 @@
+public class HashSetAgregados<E> extends HashSet<E> {
+     private int cantidadAgregados = 0;
+
+     public HashSetAgregados() {
+
+     }
+
+     public HashSetAgregados(int initCap, float loadFactor) {
+        super(initCap, loadFactor);
+     }
+
+     @Override
+     public boolean add(E e) {
+         cantidadAgregados++;
+         return super.add(e);
+     }
+
+     @Override
+     public boolean addAll(Collection<? extends E> c) {
+         cantidadAgregados += c.size();
+         return super.addAll(c);
+     }
+
+     public int getCantidadAgregados() {
+        return cantidadAgregados;
+     }
+ }
+
+ ---------------------------------------------
+ a) Análisis del funcionamiento de HashSetAgregados y su relación con la herencia
+
+ ¿Tiene el funcionamiento esperado?
+ - No. Si agregamos una colección de N elementos mediante el método addAll(c),
+ el método duplicará el conteo, sumando 2N al contador cantidadAgregados.
+
+ ¿Por qué ocurre este comportamiento?
+ 1- Al invocar addAll(c) en HashSetAgregados:El método HashSetAgregados.addAll(c)
+ ejecuta cantidadAgregados += c.size(); (suma N).
+ 2- Luego invoca a super.addAll(c).
+ La implementación de addAll heredada de la superclase (AbstractCollection / HashSet)
+ recorre la colección c e invoca internamente a this.add(e) para cada elemento.
+ 3- Debido al enlace dinámico (polimorfismo), this.add(e) no ejecuta el add original de HashSet,
+ sino el método sobrescrito en HashSetAgregados.
+ 4- Por cada uno de los N elementos, HashSetAgregados.add(e) vuelve a ejecutar cantidadAgregados++ (suma N más).
+
+ Relación con la herencia: Este es un problema clásico derivado de la herencia de clases
+ concretas: la subclase depende del detalle de implementación interna de la superclase
+ (el "autouso" o invocación interna de métodos como addAll llamando a add).
+ Si la superclase cambia su implementación interna en una versión futura de la plataforma,
+ el comportamiento de la subclase puede romperse silenciosamente.

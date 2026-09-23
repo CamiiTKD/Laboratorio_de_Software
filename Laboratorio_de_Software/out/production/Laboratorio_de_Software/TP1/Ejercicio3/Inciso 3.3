@@ -1,0 +1,56 @@
+-----Constructores privados-----
+package laboratorio;
+public class SuperClase {
+    private SuperClase() {
+    }
+}
+
+package laboratorio;
+public class SubClase extends SuperClase {
+    public SubClase() {
+    }
+}
+
+-----Constructores protegidos-----
+
+package laboratorio;
+public class SuperClase{
+    protected SuperClase(){
+    }
+}
+
+package laboratorio1;
+public class SubClase extends SuperClase {
+    public SubClase() {
+    }
+}
+
+package laboratorio1;
+public class OtraClase {
+    public OtraClase() {
+    }
+    public void getX() {
+        new SuperClase();
+    }
+}
+
+1. Caso: Constructores privados
+La implementación es incorrecta (no compila).
+Justificación
+- El constructor SubClase() invoca de manera implícita a super().
+- Al estar declarado como private, el constructor de SuperClase solo es visible dentro del cuerpo de la propia SuperClase.
+- La subclase no tiene visibilidad sobre él, por lo que el compilador arroja un error: The constructor SuperClase() is not visible.
+- Regla: Una clase con únicamente constructores privados no puede ser extendida, ya que ninguna subclase puede invocar a su constructor padre.
+
+2. Caso: Constructores protegidos
+La implementación es parcialmente incorrecta: SubClase es válida, pero OtraClase falla en compilación.
+Justificación por clase:
+
+SubClase (Válida ✔️):
+- SubClase extiende a SuperClase desde otro paquete (laboratorio1).
+- El constructor de SubClase ejecuta implícitamente super(). Como el constructor de la superclase es protected, es accesible para sus subclases por el mecanismo de herencia, independientemente del paquete.
+
+OtraClase (Inválida / Error de compilación ❌):
+- OtraClase no hereda de SuperClase ni pertenece al paquete laboratorio.
+- La línea new SuperClase(); dentro de getX() intenta instanciar directamente un constructor protected fuera de su paquete sin ser subclase ni estar dentro del flujo de inicialización por herencia.
+- El compilador arroja el error: The constructor SuperClase() is not visible.

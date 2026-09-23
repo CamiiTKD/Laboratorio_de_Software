@@ -1,0 +1,93 @@
+public interface InstrumentoMusical {
+     void hacerSonar();
+     String queEs();
+     void afinar(){}
+}
+
+class abstract InstrumentoDeViento implements InstrumentoMusical {
+     void hacerSonar(){
+        System.out.println("Sonar Vientos");
+     }
+     public String queEs() {
+        return "Instrumento de Viento";
+     }
+}
+class InstrumentoDeCuerda implements InstrumentoMusical {
+     void hacerSonar(){
+        System.out.println("Sonar Cuerdas");
+     }
+     public String queEs() {
+        return "Instrumento de Cuerda";
+     }
+}
+
+---------------------------------------------------------
+
+#### Errores identificados:
+
+1. Error en **InstrumentoMusical**:
+  * La declaración `void afinar(){}` define un método con cuerpo `{}` dentro de una interfaz sin utilizar la palabra clave `default`. Por defecto, los métodos de una interfaz son `public` y `abstract`, por lo que no pueden tener cuerpo a menos que sean explícitamente declarados como `default`, `static` o `private`.
+2. Error sintáctico en **InstrumentoDeViento**:
+  * La sintaxis `class abstract InstrumentoDeViento` es incorrecta. En Java, el modificador de acceso/abstracción debe preceder a la palabra clave `class` (`abstract class InstrumentoDeViento`).
+3. Error de reducción de visibilidad en **hacerSonar()**:
+  * En `InstrumentoMusical`, el método `void hacerSonar()` es implícitamente `public`.
+  * Tanto en `InstrumentoDeViento` como en `InstrumentoDeCuerda`, la implementación `void hacerSonar()` omite el modificador `public`, otorgándole visibilidad de paquete (*default / package-private*).
+  * Regla de sobreescritura: El nivel de acceso de un método sobreescrito debe ser igual o menos restrictivo que el declarado en la superclase o interfaz. Al intentar pasar de `public` a visibilidad de paquete, se produce un error de compilación por reducción de visibilidad.
+
+---
+
+#### ¿Cómo modificar `afinar()` para evitar cambios en las clases implementadoras?
+
+Para evitar modificar las clases `InstrumentoDeViento`, `InstrumentoDeCuerda` o cualquier otra implementación existente, se debe declarar el método `afinar()` como un **método** **default**:
+
+```
+default void afinar() {
+    // Implementación predeterminada (puede ser vacía o contener lógica común)
+}
+
+```
+
+Los métodos `default` (incorporados en Java 8) proveen una implementación predeterminada que se "inyecta" automáticamente en todas las clases que implementan la interfaz. De esta forma, las clases existentes no quedan obligadas a implementar dicho método, manteniendo la compatibilidad binaria y evitando errores de compilación.
+
+---
+
+#### Código Completo Corregido
+
+```
+// Interfaz corregida con método default
+public interface InstrumentoMusical {
+    void hacerSonar();
+    String queEs();
+
+    // Método default: evita obligar a las clases a implementarlo
+    default void afinar() {
+        System.out.println("Afinando instrumento...");
+    }
+}
+
+// Clase abstracta corregida (sintaxis y modificador public en hacerSonar)
+abstract class InstrumentoDeViento implements InstrumentoMusical {
+    @Override
+    public void hacerSonar() { // Debe ser public
+        System.out.println("Sonar Vientos");
+    }
+
+    @Override
+    public String queEs() {
+        return "Instrumento de Viento";
+    }
+}
+
+// Clase concreta corregida (modificador public en hacerSonar)
+class InstrumentoDeCuerda implements InstrumentoMusical {
+    @Override
+    public void hacerSonar() { // Debe ser public
+        System.out.println("Sonar Cuerdas");
+    }
+
+    @Override
+    public String queEs() {
+        return "Instrumento de Cuerda";
+    }
+}
+```

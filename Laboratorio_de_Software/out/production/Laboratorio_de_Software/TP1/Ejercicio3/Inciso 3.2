@@ -1,0 +1,34 @@
+import java.io.File;
+public class MiArchivo extends File {
+    public MiArchivo() {
+        System.out.println("Mi Archivo instanciado") ;
+    }
+}
+
+No, el código no compila.
+Causa del error:
+La primera línea del constructor MiArchivo() invoca de manera implícita al constructor sin argumentos de la superclase (super()).
+Sin embargo, la clase java.io.File no posee un constructor por defecto sin parámetros (todos sus constructores disponibles requieren argumentos, como File(String pathname), File(String parent, String child), File(File parent, String child) o File(URI uri)).
+Al no encontrar un constructor File() accesible, el compilador arroja un error:
+- Implicit super constructor File() is undefined. Must explicitly invoke another constructor
+
+Solución
+Para solucionarlo, el constructor de MiArchivo debe invocar explícitamente a un constructor válido de File usando super(...).
+Ej:
+
+package laboratorio;
+import java.io.File;
+
+public class MiArchivo extends File {
+    // Solución 1: Recibir la ruta como parámetro y delegar a super(pathname)
+    public MiArchivo(String pathname) {
+        super(pathname);
+        System.out.println("Mi Archivo instanciado: " + pathname);
+    }
+    // Solución 2 (Opcional): Si se requiere mantener un constructor sin parámetros,
+    // se debe pasar una ruta por defecto a super(...)
+    public MiArchivo() {
+        super("archivo_por_defecto.txt");
+        System.out.println("Mi Archivo instanciado con ruta por defecto");
+    }
+}

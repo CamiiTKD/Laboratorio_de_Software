@@ -1,0 +1,41 @@
+a- Para que un objeto se pueda serializar, su clase debe implementar la interfaz
+marcadora `java.io.Serializable`. Como `FiguraGeometrica` es la superclase abstracta
+de la jerarquía, al hacer que `FiguraGeometrica` implemente `Serializable`,
+todas sus subclases (`Circulo`, `Rectangulo`) heredan automáticamente esta propiedad.
+Además, es una buena práctica declarar de forma explícita el atributo constante
+`serialVersionUID` en cada clase.
+
+### a) ¿Cómo se serializa un objeto? ¿Con qué fin?
+
+¿Cómo se serializa?
+
+1. Contrato/Interfaz: La clase del objeto a serializar debe implementar la interfaz
+marcadora `java.io.Serializable` del paquete `java.io`.
+2. Proceso de Escritura (Serialización / Marshalling): Se utiliza la clase
+`ObjectOutputStream` conectada a un flujo de salida (como `FileOutputStream` o
+`ByteArrayOutputStream`) y se invoca al método `writeObject(objeto)`:
+```
+    try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream("figuras.ser"))) {
+        out.writeObject(miObjeto);
+    }
+
+```
+
+1. Proceso de Lectura (Deserialización / Unmarshalling): Se utiliza `ObjectInputStream` y
+se invoca al método `readObject()` realizando un *downcasting* al tipo correspondiente:
+```
+    try (ObjectInputStream in = new ObjectInputStream(new FileInputStream("figuras.ser"))) {
+        FiguraGeometrica f = (FiguraGeometrica) in.readObject();
+    }
+```
+
+#### ¿Con qué fin?
+
+* Persistencia de estado: Guardar el estado interno de las instancias en un soporte
+no volátil (archivos en disco o bases de datos) para conservarlas tras
+la finalización del programa.
+* Transmisión por red: Enviar objetos a través de sockets o llamadas a
+servicios/procesos remotos (ej. RMI, arquitecturas distribuidas).
+* Intercambio y almacenamiento temporal: Mantener sesiones activas o
+duplicar/clonar objetos mediante copias profundas (*deep copy*) a través de
+streams de memoria.

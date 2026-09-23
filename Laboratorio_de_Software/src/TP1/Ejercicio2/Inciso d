@@ -1,0 +1,8 @@
+d) No, el acceso no es válido.
+
+   Justificación
+   En el inciso c), los miembros int x; y void unMetodoA() poseen acceso por defecto (default o package-private), ya que no tienen ningún modificador explícito.
+   Las reglas de visibilidad para el modificador default establecen que los miembros únicamente son accesibles dentro del mismo paquete (package griego).
+   A diferencia del modificador protected, el acceso por defecto no se hereda ni es accesible fuera del paquete, incluso si la clase que intenta acceder es una subclase directa (extends Alpha). Por lo tanto, cualquier subclase declarada en el paquete romano:
+   Heredará la clase Alpha, pero no tendrá visibilidad sobre x ni sobre unMetodoA().
+   Cualquier intento de acceder a this.x, super.x, this.unMetodoA() o super.unMetodoA() generará un error de compilación por falta de visibilidad fuera del paquete.
