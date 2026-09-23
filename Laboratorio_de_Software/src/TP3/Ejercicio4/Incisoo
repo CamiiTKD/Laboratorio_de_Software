@@ -1,0 +1,43 @@
+### 1\. "Se pueden instanciar más allá del punto en donde fueron declaradas."
+
+* FALSO.
+* Justificación: Las clases anónimas combinan en una misma expresión la definición de la clase y
+su instanciación. Al carecer de un nombre identificador explícito, es imposible volver a instanciarlas
+mediante el operador `new` en cualquier otro punto del programa.
+Si se requiere utilizar el objeto generado en múltiples lugares, la única opción es almacenar
+la referencia retornada en una variable o constante.
+
+---
+
+### 2\. "Uno de los usos más comunes de este tipo de clases es la creación de objetos función y
+procesos on the fly."
+
+* VERDADERO.
+* Justificación: Históricamente, uno de los usos más extendidos de las clases anónimas
+es la creación al vuelo (on the fly) de objetos-función y estrategias inmediatas
+(como pasaje de comparadores en `Arrays.sort()` o manejadores de eventos)
+en el lugar exacto donde se pasan como parámetros a un método.
+
+---
+
+### 3\. "Se puede utilizar el instanceof siempre y cuando la interfaz de la que deriva
+la clase anónima sea de tipo marker."
+
+* FALSO.
+* Justificación: El operador `instanceof` permite consultar en tiempo de ejecución si un objeto
+es instancia de un determinado tipo. Una instancia de una clase anónima se puede evaluar
+con `instanceof` contra cualquier interfaz o superclase que implemente o extienda
+(por ejemplo `instanceof Comparator`, `instanceof Runnable` o `instanceof File`),
+sin importar en absoluto si la interfaz es de tipo marcadora (marker) o una interfaz convencional
+con métodos.
+
+---
+
+### 4\. "No se puede implementar múltiples interfaces o extender clases e implementar
+interfaces al mismo tiempo."
+
+* VERDADERO.
+* Justificación: Las clases anónimas tienen una restricción sintáctica explícita:
+solo pueden extender una única clase O implementar una única interfaz.
+No es posible definir una clase anónima que implemente más de una interfaz a la vez,
+ni que extienda una clase concreta y además implemente una interfaz simultáneamente.

@@ -1,0 +1,49 @@
+### b) ¿Cómo inicializar valores en una clase anónima al momento de crear su instancia?
+
+Dado que las clases anónimas carecen de nombre, es imposible declarar un constructor explícito
+para ellas, ya que en Java todo constructor debe tener exactamente el mismo nombre que su clase.
+
+Para inicializar valores en una clase anónima se utilizan las siguientes técnicas:
+
+#### 1\. Bloques de Inicialización de Instancia
+
+Se utiliza un bloque de código entre llaves `{ ... }` directamente dentro del cuerpo
+de la clase anónima. Este bloque se ejecuta de forma automática cada vez que se instancia la clase,
+actuando como un equivalente al cuerpo de un constructor por defecto:
+
+```
+@Override
+public Iterator<String> iterator(){
+    return new Iterator<String>() {
+        private int posicion;
+
+        // Bloque de inicialización de instancia (funciona como constructor)
+        {
+            posicion = items.size() - 1;
+            // Aquí se pueden ejecutar validaciones o algoritmos de inicialización
+        }
+
+        @Override
+        public boolean hasNext() {
+            return posicion >= 0;
+        }
+
+        @Override
+        public String next() {
+            return items.get(posicion--);
+        }
+    };
+}
+```
+
+#### 2\. Argumentos en el Constructor de la Superclase
+
+Si la clase anónima extiende una clase base en lugar de implementar una interfaz,
+se pueden enviar argumentos a través de la llamada a `new SuperClase(arg1, arg2)`,
+invocando explícitamente a un constructor con parámetros de dicha superclase.
+
+#### 3\. Captura de Variables Locales o Parámetros (Effectively Final)
+
+La clase anónima puede acceder directamente a las variables y parámetros del metodo contenedor
+para inicializar sus propios atributos, siempre y cuando dichas variables sean
+efectivamente finales (effectively final).

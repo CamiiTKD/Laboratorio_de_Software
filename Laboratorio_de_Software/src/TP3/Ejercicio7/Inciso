@@ -1,0 +1,42 @@
+### 1\. Respuestas Teóricas sobre module-info.java
+
+* ¿Para qué sirve el archivo module-info.java ? Es el descriptor del módulo (module descriptor).
+Define la identidad y fronteras de un módulo en Java 9+, especificando su nombre único,
+qué paquetes hace públicos hacia otros módulos (`exports`) y de qué otros módulos depende para
+compilar y ejecutarse (`requires`).
+
+* En el módulo loggingutils, ¿qué declaración debe incluirse en module-info.java para exponer
+su paquete al resto de los módulos? Debe incluirse la sentencia exports loggingutils;.
+Esto permite que otros módulos puedan importar y utilizar las clases públicas del paquete
+`loggingutils`.
+
+* Para usar java.util.logging.Logger desde loggingutils , ¿es necesario declarar alguna dependencia
+en module-info.java?¿Por qué? Sí, es necesario declarar la dependencia explícita requires java.logging;.
+
+*¿Por qué? El único módulo que se incluye automáticamente sin necesidad de declaración es
+java.base (que contiene paquetes como `java.lang`, `java.util`, `java.io`).
+La clase `java.util.logging.Logger` forma parte del módulo java.logging.
+En el sistema de módulos de Java, cualquier tipo ubicado fuera de `java.base`
+requiere ser declarado explícitamente mediante la cláusula `requires` en el descriptor del módulo.
+
+-------------------------------------
+
+1\. Compilar el módulo loggingutils:
+
+```
+javac -d mods/loggingutils loggingutils/src/module-info.java loggingutils/src/loggingutils/Logger.java
+
+```
+
+2\. Compilar el módulo test:
+
+```
+javac --module-path mods -d mods/test test/src/module-info.java test/src/test/Main.java
+
+```
+
+3\. Ejecutar la aplicación modular:
+
+```
+java --module-path mods -m test/test.Main
+```

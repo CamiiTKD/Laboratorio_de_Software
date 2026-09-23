@@ -1,0 +1,15 @@
+### Explicación de las Clases Anónimas y Criterios
+
+1. Uso de Comparator<Estudiante> * como Clase Anónima: Cada llamada a `Arrays.sort()`
+recibe una instancia de una clase anónima que implementa la interfaz funcional `Comparator<Estudiante>.
+Esto permite definir el algoritmo de comparación de manera local e inmediata sin crear un archivo `.java`
+independiente para cada criterio.
+
+2. Orden Ascendente vs. Descendente:
+ * Ascendente: Compara el primer elemento con el segundo (`e1.compareTo(e2)` o `Integer.compare(e1, e2)`).
+ Devuelve un valor negativo si `e1 < e2`.
+ * Descendente: Invierte los términos en la comparación (`e2.compareTo(e1)` o `Integer.compare(e2, e1)`).
+
+3. Comparación Compuesta (Nombre y Apellido): Al comparar por múltiples atributos (criterio 4),
+evaluamos primero el nombre. Si el resultado es distinto de cero (son diferentes),
+lo retornamos directamente. Si es cero (mismo nombre), comparamos los apellidos para desempatar.

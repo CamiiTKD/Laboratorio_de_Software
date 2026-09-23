@@ -1,0 +1,17 @@
+### a) ¿En qué situación es conveniente definir a una clase como anónima?
+
+Es conveniente definir e instanciar una clase anónima cuando se cumplen las siguientes condiciones:
+
+1. Objeto de uso único y localizado: Cuando solo se necesita crear una única instancia del objeto
+en el punto exacto de ejecución y no se requiere reutilizar la definición del tipo en ningún
+otro lugar de la aplicación.
+
+2. Implementación concisa: Cuando el cuerpo de la clase es breve y simple (pocas líneas de código).
+
+3. Paso de comportamientos o callbacks: Es el enfoque estándar para definir rápidamente objetos-función,
+estrategias on the fly (como un `Comparator`), iteradores locales o manejadores de eventos
+(listeners).
+
+4. Encapsulamiento total: Permite ocultar completamente los detalles de implementación
+sin contaminar el espacio de nombres del paquete o de la clase contenedora con clases nombradas
+adicionales.
